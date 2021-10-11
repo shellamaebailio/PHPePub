@@ -123,13 +123,18 @@ class Metadata {
         }
 
         foreach ($this->metaProperties as $data) {
-            list($name, $content) = each($data);
-            $metadata .= "\t\t<meta property=\"" . $name . "\">" . $content . "</meta>\n";
+            foreach ($data as $name => $content) {
+                $metadata .= "\t\t<meta property=\"" . $name . "\">" . $content . "</meta>\n";
+            }
+            // list($name, $content) = each($data);
+            
         }
 
         foreach ($this->meta as $data) {
-            list($name, $content) = each($data);
-            $metadata .= "\t\t<meta name=\"" . $name . "\" content=\"" . $content . "\" />\n";
+            // list($name, $content) = each($data);
+            foreach ($data as $name => $content) {
+                $metadata .= "\t\t<meta name=\"" . $name . "\" content=\"" . $content . "\" />\n";
+            }
         }
 
         return $metadata . "\t</metadata>\n";

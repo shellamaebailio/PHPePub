@@ -355,13 +355,16 @@ class Ncx {
             $this->rootLevel();
             $this->subLevel($this->referencesTitle, $this->referencesId, $this->referencesClass);
             $refId = 1;
-            while (list($item, $descriptive) = each($this->referencesOrder)) {
+            foreach ($this->referencesOrder as $item => $descriptive) {
                 if (array_key_exists($item, $this->referencesList)) {
                     $name = (empty($this->referencesName[$item]) ? $descriptive : $this->referencesName[$item]);
                     $navPoint = new NavPoint($name, $this->referencesList[$item], "ref-" . $refId++);
                     $this->addNavPoint($navPoint);
                 }
             }
+            // while (list($item, $descriptive) = each($this->referencesOrder)) {
+                
+            // }
         }
     }
 

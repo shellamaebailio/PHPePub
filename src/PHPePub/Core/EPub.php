@@ -2058,7 +2058,11 @@ class EPub {
         }
 
         reset($this->ncx->chapterList);
-        list($firstChapterName, $firstChapterNavPoint) = each($this->ncx->chapterList);
+        // list($firstChapterName, $firstChapterNavPoint) = each($this->ncx->chapterList);
+        foreach ($this->ncx->chapterList as $firstChapterName => $firstChapterNavPoint) {
+            $firstChapterFileName = $firstChapterNavPoint->getContentSrc();
+            $this->opf->addReference(Reference::TEXT, StringHelper::decodeHtmlEntities($firstChapterName), $firstChapterFileName);
+        }
         /** @var $firstChapterNavPoint NavPoint */
         $firstChapterFileName = $firstChapterNavPoint->getContentSrc();
         $this->opf->addReference(Reference::TEXT, StringHelper::decodeHtmlEntities($firstChapterName), $firstChapterFileName);
@@ -2156,16 +2160,22 @@ class EPub {
         }
         $tocData .= ">\n";
 
-        while (list($item, $descriptive) = each($this->referencesOrder)) {
-            if ($item === "text") {
-                while (list($chapterName, $navPoint) = each($this->ncx->chapterList)) {
-                    /** @var $navPoint NavPoint */
-                    $fileName = $navPoint->getContentSrc();
-                    $level = $navPoint->getLevel() - 2;
-                    $tocData .= "\t<p class='level" . ($level+1) . "'>"
-                        /* . str_repeat(" &#160;  &#160;  &#160;", $level) . */
-                        . "<a href=\"" . $fileName . "\">" . $chapterName . "</a></p>\n";
-                }
+        foreach ($this->referencesOrder as $item => $descriptive) {
+            //     # code...
+            // }
+            // while (list($item, $descriptive) = each($this->referencesOrder)) {
+                if ($item === "text") {
+                    foreach ($this->ncx->chapterList as $chapterName => $navPoint) {
+                    //     # code...
+                    // }
+                    // while (list($chapterName, $navPoint) = each($this->ncx->chapterList)) {
+                        /** @var $navPoint NavPoint */
+                        $fileName = $navPoint->getContentSrc();
+                        $level = $navPoint->getLevel() - 2;
+                        $tocData .= "\t<p class='level" . ($level+1) . "'>"
+                            /* . str_repeat(" &#160;  &#160;  &#160;", $level) . */
+                            . "<a href=\"" . $fileName . "\">" . $chapterName . "</a></p>\n";
+                    }
             } else {
                 if ($this->tocAddReferences === true) {
                     if (array_key_exists($item, $this->ncx->referencesList)) {
